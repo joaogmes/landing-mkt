@@ -1,0 +1,42 @@
+Como vai funcionar o site de campanhas:
+
+Vamos combinar com o cliente o tipo de campanha que vai ser, geralmente aumento de vendas, aumento de clientes, etc. Vamos inserir as informãções genéricas no site e vender a landing page pra ele. Vai ter o padrão, 1 foto na home, 1 texto e foto no sobre, os serviços, produtos, uma galeria / portfólio, depoimentos de clientes e informações de contato. Para usar as estratégias de marketing e remarketing vamos ter a opção de usar blog ou questionários. Quando for pelo post do blog vamos pegar s informações de quem tem interesse naquele conteúdo. Quando for pelo questionário podemos pegar informações por: interesse, poder aquisitivo, relevância do produto, etc. Pelo blog temos ainda a opção de capturar o e-mail do espectador. Com o questionário temos a opçao de fazer filtros avançados e separar o público de acordo com o grau de interação, por exemplo: público que acessou o questionário; público que preencheu o questionário e público que preencheu e solicitou contato.
+
+Quando criarmos a página vamos solicitar certificado SSL e cadastrar no CloudFlare. Aí vamos otimizar o SEO...as palavras chave e a descrição serão cadastradas pelo painel de configuração; as chaves do Google e Facebook também; os códigos para SEO do facebook e twitter serão gerados automáticamente com a descrição e título do site, a imagem será o logo. 
+
+O ideal seria que esses sites fossem todos cadastrados e monitorados por um painel hospedado no nosso site, mas por enquanto vamos fazer o gerenciamento manual mesmo. Pra isso vamos utilizar bastante o Trello para atualizar os status, e uma ferramenta de comunicação exclusiva pra isso (pode ser um server no discord mesmo).
+
+Para fazer essas estratégias funcionarem vamos precisar configurar e integrar o Google ADS e o Pixel do Facebook. Vamos precisar tabém de um CRM e um e-mail marketing e para isso vamos usar o mail chimp.
+
+O que precisa ter no site:
+
+Informações do Cliente:
+- Logo
+- Resumo
+- Sobre
+- Produtos
+- Serviços
+- Portfólio/Galeria
+- Depoimentos
+- Endereço Físico
+- Telefone
+- E-mail
+- Facebook
+- Instagram
+- Twitter
+
+Códigos:
+- Google Analytics
+- Google ADS
+- Facebook Pixel
+
+Recursos:
+- Blog (Categoria, Post e Busca)
+- Questionário (Perguntas, Resultado e CTA)
+- Newsletter
+
+Ferramentas
+- Trello
+- Mailchimp
+- Google ADS
+- Facebook ADDS
