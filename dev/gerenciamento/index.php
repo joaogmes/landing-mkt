@@ -18,9 +18,11 @@
         die();
     }
 
-    if(checarInstalacao()){
-    	include('./modulos/instalacao/install.php');
-    	echo checarInstalacao();
+    if(checarInstalacao()!='completo'){
+    	$etapa = checarInstalacao();
+        include('./modulos/instalacao/install.php');
+        // header('Location: ./?modulo=instalacao&acao=install&etapa='.checarInstalacao());
+        // echo '<script>window.location.href="./?modulo=instalacao&acao=install&etapa='.checarInstalacao().'";</script>';
     	die();
     }
 
