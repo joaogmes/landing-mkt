@@ -26,5 +26,5 @@ if($etapa_funcao=='2' && $etapa_url=='1'|| $etapa_url=='2'){
     <hr>
 </div>
 <?php 
-include('./modulos/instalacao/etapas/'.$etapa_url.'.php');
+include('./modulos/instalacao/etapas/'.$etapa.'.php');
 ?>

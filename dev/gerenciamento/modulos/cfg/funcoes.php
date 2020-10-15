@@ -191,39 +191,58 @@ function upload($arquivo, $campo){
 
     if ($_FILES[$campo]['size'] == 0)
     {
-        return "Nenhum arquivo selecionado";
+        // return "Nenhum arquivo selecionado";
+        return false;
     }
 
     $check = getimagesize($_FILES[$campo]["tmp_name"]);
     if($check !== false) {
         $uploadOk = 1;
     } else {
-        return "Arquivo inválido.";
+        // return "Arquivo inválido.";
+        return false;
         $uploadOk = 0;
     }
 
     if (file_exists($target_file)) {
-        return "Arquivo já enviado.";
+        // return "Arquivo já enviado.";
+        return false;
         $uploadOk = 0;
     }
 
-    if ($_FILES[$campo]["size"] > 100000) {
-        return "Arquivo muito grande.";
+    if ($_FILES[$campo]["size"] > 500000) {
+        // return "Arquivo muito grande.";
+        return false;
         $uploadOk = 0;
     }
 
-    if($imageFileType != "png") {
-        return "Somente arquivo PNG permitido.";
+    if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "svg") {
+        // return "Formato de imagem não permitido.";
+        return false;
         $uploadOk = 0;
     }
 
     if ($uploadOk == 0) {
-        return "Arquivo NÃO ENVIADO.";
+        // return "Arquivo NÃO ENVIADO.";
+        return false;
     } else {
         if (move_uploaded_file($_FILES[$campo]["tmp_name"], $target_file)) {
-            return "O arquivo ". htmlspecialchars( basename( $_FILES[$campo]["name"])). " foi enviado.";
+            return $_FILES[$campo]["name"];
         } else {
-            return "Erro no upload.";
+            // return "Erro no upload.";
+            return false;
         }
+    }
+}
+
+function verificarArquivos($logotipo, $sobre, $header){
+    $caminho = "./uploads/";
+    if(file_exists($caminho.$logotipo) && file_exists($caminho.$sobre) && file_exists($caminho.$header)){
+        return true;
+    }else{
+        unlink($caminho.$logotipo);
+        unlink($caminho.$sobre);
+        unlink($caminho.$header);
+        return false;
     }
 }
