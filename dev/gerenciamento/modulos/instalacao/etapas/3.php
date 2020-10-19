@@ -8,7 +8,10 @@
         $logotipo = upload($_FILES, "logotipo");
         $header = upload($_FILES, "header");
         $sobre = upload($_FILES, "sobre");
-
+        // echo var_dump($logotipo)."<br>";
+        // echo var_dump($header)."<br>";
+        // echo var_dump($sobre)."<br>";
+        // echo var_dump(verificarArquivos($logotipo, $sobre, $header));
         if(verificarArquivos($logotipo, $sobre, $header)){
             $imagens = array(
                 'logotipo' => $logotipo,
@@ -16,15 +19,30 @@
                 'sobre' => $sobre
             );
             $dados = array_merge($_POST, $imagens);
-            echo var_dump($dados);
+            unset($dados["enviar"]);
+            $sucesso = "./";
+            $falha = '<div
+            // class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Erro!</strong> Não foi possível gravar no banco de dados, atualize a página e tente novamente.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            </div>';
+            echo crud('inserir', 'template', $dados, $sucesso, $falha);
         }else{
-            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            $caminho = "./uploads/";
+            $del_logo = (!$logotipo) ? '' : unlink($caminho.$logotipo); 
+            $del_sobre = (!$sobre) ? '' : unlink($caminho.$sobre); 
+            $del_header = (!$header) ? '' : unlink($caminho.$header); 
+            echo '<div
+            // class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Erro!</strong> Revise os campos de upload e tente novamente.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
             </div>';
         }
+        // die();
 
 // $sucesso = "./?modulo=instalacao&acao=install&etapa=3";
 // $falha = "Erro ao inserir dados";

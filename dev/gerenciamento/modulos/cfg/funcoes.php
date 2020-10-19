@@ -128,16 +128,24 @@ function crud($operacao, $tabela, $dados, $sucesso, $falha)
     $conexao = conectaBanco('local');
     switch ($operacao) {
         case 'listar':
-        $listar = $conexao->prepare($dados);
-        return $listar;
+        $query = "SELECT * FROM ".$tabela." ".$dados;
+        $listar = $conexao->prepare($query);
+        $listar->execute();
+        $retorno = $listar->fetch(PDO::FETCH_ASSOC);
+        return $retorno;
         break;
 
         case 'inserir':
         $campos = ' (';
         $valores = ') VALUES (';
         foreach ($dados as $chave => $valor) {
+            if($chave == 'files'){
+
+            }else{
+
             $campos .= " " . $chave . " ,";
             $valores .= " '" . $valor . "' ,";
+            }
         }
         $campos = substr($campos, 0, -1);
         $valores = substr($valores, 0, -1);
@@ -145,7 +153,6 @@ function crud($operacao, $tabela, $dados, $sucesso, $falha)
         $stmt = $conexao->prepare($query);
         if ($stmt->execute()) {
             $id = $conexao->lastInsertId();
-// $caminho = "./?modulo=clientepf&acao=visualizar&id=" . $id;
             $retorno = header("Location: " . $sucesso);
         } else {
             $retorno = "<h3>".$falha."</h3>";
@@ -154,7 +161,25 @@ function crud($operacao, $tabela, $dados, $sucesso, $falha)
         break;
 
         case 'alterar':
-# code...
+        $campos = '';
+        $valores = '';
+        foreach ($dados as $chave => $valor) {
+            if($chave == 'files'){
+            }else{
+                $campos .= " " . $chave . " = '".$valor."',";
+            }
+        }
+        $campos = substr($campos, 0, -1);
+// $valores = substr($valores, 0, -1);
+        $query = "UPDATE " . $tabela . " SET " . $campos . " WHERE id='1' ";
+        $stmt = $conexao->prepare($query);
+        if ($stmt->execute()) {
+            $id = $conexao->lastInsertId();
+            $retorno = "<script>window.location='./?modulo=".$tabela."&acao=atualizar';</script>";
+        } else {
+            $retorno = "<h3>Deu errado</h3>";
+        }
+        return $retorno;
         break;
 
         case 'excluir':
@@ -185,13 +210,15 @@ function cadastrarpf($dados)
 
 function upload($arquivo, $campo){
     $target_dir = "./uploads/";
-    $target_file = $target_dir . basename($_FILES[$campo]["name"]);
+    $numerador=strtotime('now').mt_rand();
+    $arquivo= $numerador.str_replace(" ", "", basename($_FILES[$campo]["name"]));
+    $target_file = $target_dir . $arquivo;
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
     if ($_FILES[$campo]['size'] == 0)
     {
-        // return "Nenhum arquivo selecionado";
+// return "Nenhum arquivo selecionado";
         return false;
     }
 
@@ -199,37 +226,38 @@ function upload($arquivo, $campo){
     if($check !== false) {
         $uploadOk = 1;
     } else {
-        // return "Arquivo inválido.";
+// return "Arquivo inválido.";
         return false;
         $uploadOk = 0;
     }
 
     if (file_exists($target_file)) {
-        // return "Arquivo já enviado.";
+// return "Arquivo já enviado.";
+// return $_FILES[$campo]["name"];
         return false;
         $uploadOk = 0;
     }
 
-    if ($_FILES[$campo]["size"] > 500000) {
-        // return "Arquivo muito grande.";
+    if ($_FILES[$campo]["size"] > 5000000) {
+// return "Arquivo muito grande.";
         return false;
         $uploadOk = 0;
     }
 
     if($imageFileType != "png" && $imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "svg") {
-        // return "Formato de imagem não permitido.";
-        return false;
+        return "Formato de imagem não permitido.";
+// return false;
         $uploadOk = 0;
     }
 
     if ($uploadOk == 0) {
-        // return "Arquivo NÃO ENVIADO.";
+// return "Arquivo NÃO ENVIADO.";
         return false;
     } else {
         if (move_uploaded_file($_FILES[$campo]["tmp_name"], $target_file)) {
-            return $_FILES[$campo]["name"];
+            return $arquivo;
         } else {
-            // return "Erro no upload.";
+// return "Erro no upload.";
             return false;
         }
     }
@@ -237,12 +265,28 @@ function upload($arquivo, $campo){
 
 function verificarArquivos($logotipo, $sobre, $header){
     $caminho = "./uploads/";
-    if(file_exists($caminho.$logotipo) && file_exists($caminho.$sobre) && file_exists($caminho.$header)){
-        return true;
+
+    if($logotipo && $sobre && $header){
+        if(file_exists($caminho.$logotipo) && file_exists($caminho.$sobre) && file_exists($caminho.$header)){
+            return true;
+        }else{
+            return false;
+        }
     }else{
-        unlink($caminho.$logotipo);
-        unlink($caminho.$sobre);
-        unlink($caminho.$header);
+        return false;
+    }
+}
+
+function verificarArquivo($arquivo){
+    $caminho = "./uploads/";
+
+    if($arquivo){
+        if(file_exists($caminho.$arquivo)){
+            return true;
+        }else{
+            return false;
+        }
+    }else{
         return false;
     }
 }

@@ -2,9 +2,19 @@
 
 <head>
     <title>Agência Jota Gomes - Gerenciamento</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/bootstrap.css">
-    <link rel="stylesheet" href="./assets/css/font-awesome.css">
+    <link rel="stylesheet" href="./assets/css/all.css">
     <script type="text/javascript" src="./assets/js/jquery-3.5.1.min.js"></script>
+
+    <!-- include summernote css/js -->
+    <script src="./assets/js/popper.min.js"></script>
+    <script type="text/javascript" src="./assets/js/bootstrap.js"></script>
+    <link href="./assets/css/summernote-bs4.min.css" rel="stylesheet">
+    <script src="./assets/js/summernote-bs4.min.js"></script>
+
+    <link rel="icon"  href="./assets/img/icone-jgomes.png">
 </head>
 
 <body>
@@ -19,15 +29,13 @@
     }
 
     if(checarInstalacao()!='completo'){
-    	$etapa = checarInstalacao();
+        $etapa = checarInstalacao();
         include('./modulos/instalacao/install.php');
-        // header('Location: ./?modulo=instalacao&acao=install&etapa='.checarInstalacao());
-        // echo '<script>window.location.href="./?modulo=instalacao&acao=install&etapa='.checarInstalacao().'";</script>';
-    	die();
+        die();
     }
 
     $modulo = ($modulo = isset($_GET['modulo'])) ? $_GET['modulo'] : 'dashboard';
-    $acao = ($acao = isset($_GET['acao'])) ? $_GET['acao'] : 'listar';
+    $acao = ($acao = isset($_GET['acao'])) ? $_GET['acao'] : 'atualizar';
     $chave = ($chave = isset($_GET['chave'])) ? $_GET['chave'] : '';
     $valor = ($valor = isset($_GET['valor'])) ? $_GET['valor'] : '';
     $param = ($param = isset($_GET['param'])) ? $_GET['param'] : '';
@@ -35,46 +43,76 @@
 
     $status_bd_local = ('local');
     $status_bd_online = ('online');
-    // $status_bd_local = verificarConexao('local');
-    // $status_bd_online = verificarConexao('online');
+// $status_bd_local = verificarConexao('local');
+// $status_bd_online = verificarConexao('online');
+
+    $cliente = crud('listar', 'cliente', 'LIMIT 1', '', '');
+    $template = crud('listar', 'template', 'LIMIT 1', '', '');
 
     ?>
     <header>
-        <div class="container padding-0">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="./?modulo=dashboard&acao=listar"><img src="./assets/logo.png" class="logo"></a>
+        <div class="container mb-3">
+            <div class="row">
+                <div class="col-md-10">
+                    <h5>Landing Page: <?=$cliente['nome']?></h5>
+                    <a href="../" target="_blank">Ver site <i class="fa fa-eye"></i></a>
+                    <ul class="list-inline">
+                        <li class="list-inline-item">Usuário: <?= $_SESSION['usuario'] ?> |</li>
+                        <li class="list-inline-item">IP: <?= $_SERVER['REMOTE_ADDR']; ?> |</li>
+                        <li class="list-inline-item">Data: <?= date("d/m/Y - H:i") ?> |</li>
+                        <li class="list-inline-item"><a href="?modulo=login&acao=logout">Sair</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2">
+                    <img class="img-fluid" src="./uploads/<?=$template['logotipo']?>">
+                </div>
+            </div>
+        </div>
+        <div class="container ">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="./?modulo=<?= $modulo ?>"><?= $modulo ?></a></li>
+                    <li class="breadcrumb-item"><a href="./?modulo=<?= $modulo ?>&acao=<?= $acao ?>"><?= $acao ?></a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="container ">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="./?modulo=dashboard&acao=listar"><img src="./assets/img/icone-jgomes.png" class="logo"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <!-- <li class="nav-item <?= ($modulo == 'dashboard') ? 'active' : ''; ?>">
-                            <a class="nav-link" href="./?modulo=dashboard&acao=listar">Dashboard</span></a>
-                        </li> -->
-                        <li class="nav-item <?= ($modulo == 'clientepf') ? 'active' : ''; ?>">
-                            <a class="nav-link" href="./?modulo=clientepf&acao=listar">Clientes (PF)</span></a>
+                        <li class="nav-item <?= ($modulo == 'cliente') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=cliente&acao=atualizar"><i class="fa fa-id-badge"></i> Cliente</span></a>
                         </li>
-                        <li class="nav-item <?= ($modulo == 'clientepj') ? 'active' : ''; ?>">
-                            <a class="nav-link" href="./?modulo=clientepj&acao=listar">Clientes (PJ)</a>
+                        <li class="nav-item <?= ($modulo == 'template') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=template&acao=atualizar"><i class="fas fa-paint-roller"></i> Template</a>
                         </li>
-                        <li class="nav-item <?= ($modulo == 'contas') ? 'active' : ''; ?>">
-                            <a class="nav-link" href="./?modulo=contas&acao=listar">Contas à Pagar</a>
+                        <li class="nav-item <?= ($modulo == 'servicos') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=servicos&acao=listar"><i class="fas fa-people-arrows"></i> Serviços</a>
                         </li>
-                        <li class="nav-item <?= ($modulo == 'pagamentos') ? 'active' : ''; ?>">
-                            <a class="nav-link" href="./?modulo=pagamentos&acao=listar">Contas à Receber</a>
+                        <li class="nav-item <?= ($modulo == 'produtos') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=produtos&acao=listar"><i class="fas fa-box-open"></i> Produtos</a>
                         </li>
-                        <li class="nav-item <?= ($modulo == 'pecas') ? 'active' : ''; ?>">
-                            <a class="nav-link" href="./?modulo=pecas&acao=listar">Peças</a>
+                        <li class="nav-item <?= ($modulo == 'portfolio') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=portfolio&acao=listar"><i class="far fa-images"></i> Galeria</a>
                         </li>
-                        <li class="nav-item <?= ($modulo == 'relatorios') ? 'active' : ''; ?>">
-                            <a class="nav-link" href="./?modulo=relatorios&acao=listar">Relatórios</a>
+                        <li class="nav-item <?= ($modulo == 'planos') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=planos&acao=listar"><i class="fas fa-money-bill-wave"></i> Planos</a>
+                        </li>
+                        <li class="nav-item <?= ($modulo == 'blog') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=blog&acao=listar"><i class="fas fa-comments"></i> Blog</a>
+                        </li>
+                        <li class="nav-item <?= ($modulo == 'questionarios') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=questionarios&acao=listar"><i class="far fa-copy"></i> Questionários</a>
+                        </li>
+                        <li class="nav-item <?= ($modulo == 'seo') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="./?modulo=seo&acao=listar"><i class="fas fa-chart-area"></i> SEO</a>
                         </li>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" autofocus placeholder="Nº OS">
-                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Buscar</button>
-                    </form>
                 </div>
             </nav>
         </div>
@@ -89,25 +127,8 @@
     <footer>
         <div class="container">
             <hr>
-            <h4>Status do sistema:</h4>
-            <ul class="list-inline">
-                <li class="list-inline-item">Banco local: <?= $status_bd_local ?> |</li>
-                <li class="list-inline-item">Banco online: <?= $status_bd_online ?> |</li>
-                <li class="list-inline-item">Usuário: <?= $_SESSION['usuario'] ?> |</li>
-                <li class="list-inline-item">IP: <?= $_SERVER['REMOTE_ADDR']; ?> |</li>
-                <li class="list-inline-item">Data: <?= date("d/m/Y - H:i") ?> |</li>
-                <li class="list-inline-item"><a href="?modulo=login&acao=logout">Sair</a></li>
-            </ul>
-        </div>
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="./?modulo=<?= $modulo ?>"><?= $modulo ?></a></li>
-                    <li class="breadcrumb-item"><a href="./?modulo=<?= $modulo ?>&acao=<?= $acao ?>"><?= $acao ?></a></li>
-                </ol>
-            </nav>
+            <h6>Desenvolvido por: <i class="fa fa-heart-o"></i> <a href="https://jotagomes.com.br" target="_blank" class="text-warning"> Jota Gomes - Comunicação Visual</a></h6>
         </div>
     </footer>
-    <script type="text/javascript" src="./assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="./assets/js/jquery.mask.js"></script>
 </body>
