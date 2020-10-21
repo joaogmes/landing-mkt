@@ -1,7 +1,7 @@
 <?php
 
 function checarInstalacao(){
-    $conexao = $conexao = conectaBanco('local');
+    $conexao = conectaBanco('local');
 
     $etapa='';
 
@@ -123,7 +123,7 @@ function contar($tabela, $campo, $criterio)
     return $qtd;
 }
 
-function crud($operacao, $tabela, $dados, $sucesso, $falha)
+function crud($operacao, $tabela, $dados, $sucesso, $falha, $id)
 {
     $conexao = conectaBanco('local');
     switch ($operacao) {
@@ -143,8 +143,8 @@ function crud($operacao, $tabela, $dados, $sucesso, $falha)
 
             }else{
 
-            $campos .= " " . $chave . " ,";
-            $valores .= " '" . $valor . "' ,";
+                $campos .= " " . $chave . " ,";
+                $valores .= " '" . $valor . "' ,";
             }
         }
         $campos = substr($campos, 0, -1);
@@ -153,7 +153,7 @@ function crud($operacao, $tabela, $dados, $sucesso, $falha)
         $stmt = $conexao->prepare($query);
         if ($stmt->execute()) {
             $id = $conexao->lastInsertId();
-            $retorno = header("Location: " . $sucesso);
+            $retorno = "<script>window.location.href='".$sucesso."';</script>";
         } else {
             $retorno = "<h3>".$falha."</h3>";
         }
@@ -170,8 +170,8 @@ function crud($operacao, $tabela, $dados, $sucesso, $falha)
             }
         }
         $campos = substr($campos, 0, -1);
-// $valores = substr($valores, 0, -1);
-        $query = "UPDATE " . $tabela . " SET " . $campos . " WHERE id='1' ";
+        $id = isset($id) ? $id : '1';
+        $query = "UPDATE " . $tabela . " SET " . $campos . " WHERE id='".$id."' ";
         $stmt = $conexao->prepare($query);
         if ($stmt->execute()) {
             $id = $conexao->lastInsertId();
@@ -183,7 +183,15 @@ function crud($operacao, $tabela, $dados, $sucesso, $falha)
         break;
 
         case 'excluir':
-# code...
+        $id = isset($id) ? $id : '1';
+        $query = "DELETE FROM " . $tabela . " WHERE id='".$id."' ";
+        $stmt = $conexao->prepare($query);
+        if ($stmt->execute()) {
+            $retorno = "<script>window.location='".$sucesso."';</script>";
+        } else {
+            $retorno = "<h3>Deu errado</h3>";
+        }
+        return $retorno;
         break;
 
         default:

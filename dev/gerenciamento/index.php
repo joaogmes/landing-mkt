@@ -4,6 +4,7 @@
     <title>Agência Jota Gomes - Gerenciamento</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="pt-br">
     <link rel="stylesheet" href="./assets/css/bootstrap.css">
     <link rel="stylesheet" href="./assets/css/all.css">
     <script type="text/javascript" src="./assets/js/jquery-3.5.1.min.js"></script>
@@ -35,7 +36,7 @@
     }
 
     $modulo = ($modulo = isset($_GET['modulo'])) ? $_GET['modulo'] : 'dashboard';
-    $acao = ($acao = isset($_GET['acao'])) ? $_GET['acao'] : 'atualizar';
+    $acao = ($acao = isset($_GET['acao'])) ? $_GET['acao'] : 'listar';
     $chave = ($chave = isset($_GET['chave'])) ? $_GET['chave'] : '';
     $valor = ($valor = isset($_GET['valor'])) ? $_GET['valor'] : '';
     $param = ($param = isset($_GET['param'])) ? $_GET['param'] : '';
@@ -43,11 +44,9 @@
 
     $status_bd_local = ('local');
     $status_bd_online = ('online');
-// $status_bd_local = verificarConexao('local');
-// $status_bd_online = verificarConexao('online');
 
-    $cliente = crud('listar', 'cliente', 'LIMIT 1', '', '');
-    $template = crud('listar', 'template', 'LIMIT 1', '', '');
+    $cliente = crud('listar', 'cliente', 'LIMIT 1', '', '', '');
+    $template = crud('listar', 'template', 'LIMIT 1', '', '', '');
 
     ?>
     <header>

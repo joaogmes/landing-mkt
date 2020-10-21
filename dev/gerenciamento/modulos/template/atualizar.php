@@ -60,7 +60,7 @@
 		<span aria-hidden="true">&times;</span>
 		</button>
 		</div>';
-		$atualizar = crud('alterar','template', $dados, $sucesso, $falha);
+		$atualizar = crud('alterar','template', $dados, $sucesso, $falha, '');
 		echo $atualizar;
 	}else{
 	}

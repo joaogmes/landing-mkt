@@ -3,7 +3,7 @@
 if(isset($_POST['nome']) && $_POST['nome']!=""){
 	$sucesso = "./?modulo=instalacao&acao=install&etapa=3";
 	$falha = "Erro ao inserir dados";
-	$atualizar = crud('alterar','cliente', $_POST, $sucesso, $falha);
+	$atualizar = crud('alterar','cliente', $_POST, $sucesso, $falha, '');
 	echo $atualizar;
 }
 ?>

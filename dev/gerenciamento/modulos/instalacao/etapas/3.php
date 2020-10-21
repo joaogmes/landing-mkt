@@ -28,7 +28,7 @@
             <span aria-hidden="true">&times;</span>
             </button>
             </div>';
-            echo crud('inserir', 'template', $dados, $sucesso, $falha);
+            echo crud('inserir', 'template', $dados, $sucesso, $falha, '');
         }else{
             $caminho = "./uploads/";
             $del_logo = (!$logotipo) ? '' : unlink($caminho.$logotipo); 

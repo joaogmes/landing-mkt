@@ -2,7 +2,7 @@
 if(isset($_POST['nome']) && $_POST['nome']!=""){
     $sucesso = "./?modulo=instalacao&acao=install&etapa=3";
     $falha = "Erro ao inserir dados";
-    $cadastro = crud('inserir','cliente', $_POST, $sucesso, $falha);
+    $cadastro = crud('inserir','cliente', $_POST, $sucesso, $falha, '');
     echo $cadastro;
 }
 ?>
