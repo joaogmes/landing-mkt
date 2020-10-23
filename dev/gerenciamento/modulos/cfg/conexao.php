@@ -12,10 +12,10 @@ function conectaBanco($nomeBD)
             break;
 
         case 'online':
-            $hostname = '192.168.0.1';
-            $dbname = 'banco2';
-            $username = 'root';
-            $password = 'xx1!';
+            $hostname = 'br920.hostgator.com.br';
+            $dbname = 'jotagome_landing';
+            $username = 'jotagome_mkt';
+            $password = 'Nekomimi23';
             break;
     }
 

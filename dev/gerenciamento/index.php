@@ -1,3 +1,13 @@
+<?php
+error_reporting(E_ALL); ini_set("display_errors", 1);
+ include_once('./modulos/cfg/conexao.php');
+    include_once('./modulos/cfg/funcoes.php');
+    if (!checarLogin()) {
+        include('./modulos/login/login.php');
+        die();
+    }
+
+?>
 <!DOCTYPE html>
 
 <head>
@@ -20,15 +30,6 @@
 
 <body>
     <?php
-
-    include_once('./modulos/cfg/conexao.php');
-    include_once('./modulos/cfg/funcoes.php');
-
-    if (!checarLogin()) {
-        include('./modulos/login/login.php');
-        die();
-    }
-
     if(checarInstalacao()!='completo'){
         $etapa = checarInstalacao();
         include('./modulos/instalacao/install.php');

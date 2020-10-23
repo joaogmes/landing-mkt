@@ -2,21 +2,21 @@
 
 $id = (isset($_GET['id'])) ? $_GET['id'] : '';
 if($id==''){
-    die("<script>window.location.href='./?modulo=servicos&acao=listar';</script>");
+    die("<script>window.location.href='./?modulo=produtos&acao=listar';</script>");
 }
 
-$conexao = conectaBanco('local');
-$query = "SELECT * FROM servicos WHERE id = ".$id;
-$servicos = $conexao->prepare($query);
-$servicos->execute();
+    $conexao = conectaBanco('local');
+    $query = "SELECT * FROM produtos WHERE id = ".$id;
+    $produtos = $conexao->prepare($query);
+    $produtos->execute();
 
-$servico = $servicos->fetch(PDO::FETCH_ASSOC);
+    $produto = $produtos->fetch(PDO::FETCH_ASSOC);
 if(isset($_POST['deletar'])){
-    if(verificarArquivo($servico['imagem'])){
-        unlink("./uploads/".$servico['imagem']);
+    if(verificarArquivo($produto['resumo'])){
+        unlink("./uploads/".$produto['resumo']);
     }
 
-    $sucesso = "./?modulo=servicos&acao=listar";
+    $sucesso = "./?modulo=produtos&acao=listar";
     $falha = '
     <div
     class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -25,7 +25,7 @@ if(isset($_POST['deletar'])){
     <span aria-hidden="true">&times;</span>
     </button>
     </div>';
-    $excluir = crud('excluir','servicos', '', $sucesso, $falha, $id);
+    $excluir = crud('excluir','produtos', '', $sucesso, $falha, $id);
     echo $excluir;
 }
 ?>
@@ -35,16 +35,16 @@ if(isset($_POST['deletar'])){
 </div>
 <div class="container">
     <hr>
-    <form action="./?modulo=servicos&acao=excluir&id=<?=$id?>" method="POST">
+    <form action="./?modulo=produtos&acao=excluir&id=<?=$id?>" method="POST">
         <input type="hidden" name="deletar" value="sim">
         <input type="hidden" name="id" value="<?=$id?>">
         <div class="alert alert-warning fade show" role="alert">
-            <strong>Deseja excluir o serviço '<?=$servico['servico']?>'?</strong><br>
+            <strong>Deseja excluir o produto '<?=$produto['nome']?>'?</strong><br>
             Os dados serão perdidos permanentemente, sem chance de recuperação.
         </div>
         <div class="text-center">
             <button class="btn btn-warning btn-lg"><i class="fa fa-times-circle"></i> Prosseguir</button>
-            <a href="./?modulo=servicos&acao=listar" class="btn btn-default btn-lg"><i class="fa fa-angle-double-left"></i> Cancelar</a>
+            <a href="./?modulo=produtos&acao=listar" class="btn btn-default btn-lg"><i class="fa fa-angle-double-left"></i> Cancelar</a>
         </div>
     </div>
 </form>
